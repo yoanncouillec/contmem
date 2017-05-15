@@ -28,27 +28,15 @@
       ((set! ?x ?e)
        (evaluate e env mem
           (lambda (v mem')
-             (k 813 (update mem' (env x) v)))))
+             (k v (update mem' (env x) v)))))
       ((let (?x ?e1) ?e2)
        (evaluate e1 env mem
-          (lambda (v1 mem')
+          (lambda (v mem')
              (let ((n (+ 1 (mem' 0))))
                 (evaluate e2
                    (update env x n)
-                   (update (update mem' n v1) 0 n)
+                   (update mem' n v)
                    k)))))
-      ((lambda (?x) ?e)
-       (k (cons x (cons e env)) mem))
-      ((?e1 ?e2)
-       (evaluate e1 env mem
-          (lambda (closure mem)
-             (evaluate e2 env mem
-	        (lambda (arg mem)
-		  (let ((n (+ 1 (mem 0))))
-		    (evaluate (cadr closure)
-			      (update env (car closure) n)
-			      (update mem n arg)
-			      k)))))))
       (else
        (error "evaluate" "cannot evaluate" e))))
 
