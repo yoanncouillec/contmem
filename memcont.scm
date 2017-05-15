@@ -1,4 +1,4 @@
-(module memoire
+(module memcont
    (main main))
 
 ;; mem: addr -> value
