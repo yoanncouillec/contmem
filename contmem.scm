@@ -37,6 +37,16 @@
                    (update env x n)
                    (update (update mem' n v1) 0 n)
                    k)))))
+      ((call/cc ?x ?e1)
+       (let ((n (+ 1 (mem 0))))
+	 (evaluate e1
+                   (update env x n)
+                   (update (update mem n k) 0 n)
+                   k)))
+      ((throw ?x ?e)
+       (evaluate e env mem
+		 (lambda (v mem)
+		   ((mem (env x)) v mem))))
       ((lambda (?x) ?e)
        (k (cons x (cons e env)) mem))
       ((?e1 ?e2)
